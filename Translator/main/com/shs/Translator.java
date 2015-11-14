@@ -1,26 +1,7 @@
 package com.shs;
 
 import com.shs.source.URLSourceProvider;
-import jdk.internal.org.xml.sax.SAXException;
-import jdk.internal.org.xml.sax.XMLReader;
-import jdk.internal.org.xml.sax.helpers.DefaultHandler;
-import jdk.internal.util.xml.impl.SAXParserImpl;
-import jdk.nashorn.internal.parser.JSONParser;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
