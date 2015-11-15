@@ -11,11 +11,17 @@ public class SourceLoader {
     private List<SourceProvider> sourceProviders = new ArrayList<>();
 
     public SourceLoader() {
-        //TODO: initialize me
+        sourceProviders.add(new URLSourceProvider());
+        sourceProviders.add(new FileSourceProvider());
     }
 
     public String loadSource(String pathToSource) throws IOException {
-        //TODO: implement me
+        for (SourceProvider provider : sourceProviders) {
+            if(provider.isAllowed(pathToSource)){
+                return provider.load(pathToSource);
+            }
+        }
         return null;
     }
+
 }

@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class TranslatorController {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         //initialization
         SourceLoader sourceLoader = new SourceLoader();
         Translator translator = new Translator(new URLSourceProvider());
