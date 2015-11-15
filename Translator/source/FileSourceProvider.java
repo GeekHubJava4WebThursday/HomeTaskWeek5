@@ -1,6 +1,11 @@
 package source;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implementation for loading content from local file system.
@@ -9,15 +14,25 @@ import java.io.*;
  */
 public class FileSourceProvider implements SourceProvider {
 
+    private static final String LINE_BREAK = "\n";
+
     @Override
     public boolean isAllowed(String pathToSource) {
-        //TODO: implement me
-        return false;
+        Path path = Paths.get(pathToSource);
+        return Files.isRegularFile(path);
     }
 
     @Override
     public String load(String pathToSource) throws IOException {
-        //TODO: implement me
-        return null;
+        List<String> lines = Files.readAllLines(Paths.get(pathToSource));
+
+        StringBuilder fileLines = new StringBuilder();
+        for (String line : lines) {
+            fileLines.append(line);
+            fileLines.append(LINE_BREAK);
+        }
+
+        return fileLines.toString();
     }
+
 }
