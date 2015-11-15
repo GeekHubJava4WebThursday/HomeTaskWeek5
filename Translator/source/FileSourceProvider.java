@@ -1,0 +1,38 @@
+package source;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Implementation for loading content from local file system.
+ * This implementation supports absolute paths to local file system without specifying file:// protocol.
+ * Examples c:/1.txt or d:/pathToFile/file.txt
+ */
+public class FileSourceProvider implements SourceProvider {
+
+    private static final String LINE_BREAK = "\n";
+
+    @Override
+    public boolean isAllowed(String pathToSource) {
+        Path path = Paths.get(pathToSource);
+        return Files.isRegularFile(path);
+    }
+
+    @Override
+    public String load(String pathToSource) throws IOException {
+        List<String> lines = Files.readAllLines(Paths.get(pathToSource));
+
+        StringBuilder fileLines = new StringBuilder();
+        for (String line : lines) {
+            fileLines.append(line);
+            fileLines.append(LINE_BREAK);
+        }
+
+        return fileLines.toString();
+    }
+
+}
