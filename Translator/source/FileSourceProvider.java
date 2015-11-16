@@ -1,6 +1,10 @@
 package source;
 
 import java.io.*;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Implementation for loading content from local file system.
@@ -11,13 +15,20 @@ public class FileSourceProvider implements SourceProvider {
 
     @Override
     public boolean isAllowed(String pathToSource) {
-        //TODO: implement me
-        return false;
+        Path path = FileSystems.getDefault().getPath(pathToSource);
+        return Files.isRegularFile(path);
     }
 
     @Override
     public String load(String pathToSource) throws IOException {
-        //TODO: implement me
-        return null;
+        StringBuilder fileStr = new StringBuilder();
+        try(InputStreamReader inputReader = new InputStreamReader(Files.newInputStream(Paths.get(pathToSource)))){
+            while(inputReader.ready()){
+                fileStr.append((char)inputReader.read());
+            }
+        }catch (FileNotFoundException e){
+                e.printStackTrace();
+        }
+        return fileStr.toString();
     }
 }

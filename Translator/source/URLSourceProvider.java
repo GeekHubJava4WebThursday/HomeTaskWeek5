@@ -15,13 +15,29 @@ public class URLSourceProvider implements SourceProvider {
 
     @Override
     public boolean isAllowed(String pathToSource) {
-        //TODO: implement me
-        return false;
+        try{
+            URL url = new URL(pathToSource);
+            try{
+                url.openConnection().connect();
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+        } catch (MalformedURLException e){
+            return false;
+        }
+        return true;
     }
 
     @Override
     public String load(String pathToSource) throws IOException {
-        //TODO: implement me
-        return null;
+        StringBuilder urlStr = new StringBuilder();
+        try(BufferedReader bufferStr = new BufferedReader(new InputStreamReader(new URL(pathToSource).openStream(), "UTF-8"))){
+            while(bufferStr.ready()){
+                urlStr.append((char)bufferStr.read());
+            }
+        } catch(IOException e){
+            e.printStackTrace();
+         }
+        return urlStr.toString();
     }
 }
