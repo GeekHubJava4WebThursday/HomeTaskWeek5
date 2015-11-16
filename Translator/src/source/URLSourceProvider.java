@@ -1,8 +1,8 @@
 package source;
 
-import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 
 /**
@@ -11,7 +11,7 @@ import java.net.URL;
  */
 public class URLSourceProvider implements SourceProvider {
 
-    public static final int BUFFER_SIZE = 16 * 1024;
+    private static final String LINE_SEPARATOR = System.lineSeparator();
 
     @Override
     public boolean isAllowed(String pathToSource) {
@@ -29,12 +29,12 @@ public class URLSourceProvider implements SourceProvider {
         StringBuilder stringBuilder = new StringBuilder();
         URL url = new URL(pathToSource);
 
-        InputStream is = new BufferedInputStream(url.openConnection().getInputStream(), BUFFER_SIZE);
-        int currentByte;
-        while ((currentByte = is.read()) > 0) {
-            stringBuilder.append((char) currentByte);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+        String currentLine;
+        while ((currentLine = reader.readLine()) != null) {
+            stringBuilder.append(currentLine).append(LINE_SEPARATOR);
         }
-        is.close();
+        reader.close();
 
         return stringBuilder.toString();
     }

@@ -14,6 +14,8 @@ import java.nio.file.Paths;
  */
 public class FileSourceProvider implements SourceProvider {
 
+    private static final String LINE_SEPARATOR = System.lineSeparator();
+
     @Override
     public boolean isAllowed(String pathToSource) {
         try {
@@ -30,7 +32,7 @@ public class FileSourceProvider implements SourceProvider {
 
         BufferedReader bufferedReader = new BufferedReader(new FileReader(pathToSource));
         while (bufferedReader.ready()) {
-            stringBuilder.append(bufferedReader.readLine()).append("\n");
+            stringBuilder.append(bufferedReader.readLine()).append(LINE_SEPARATOR);
         }
         bufferedReader.close();
 
