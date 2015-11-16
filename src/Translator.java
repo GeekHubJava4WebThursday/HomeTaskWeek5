@@ -1,7 +1,9 @@
+import source.SourceProvider;
 import source.URLSourceProvider;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLEncoder;
 
 /**
@@ -30,8 +32,8 @@ public class Translator {
      * @throws IOException
      */
     public String translate(String original) throws IOException {
-        //TODO: implement me
-        return "";
+        String response = urlSourceProvider.load(prepareURL(original));
+        return parseContent(response);
     }
 
     /**
@@ -39,7 +41,7 @@ public class Translator {
      * @param text to translate
      * @return url for translation specified text
      */
-    private String prepareURL(String text) {
+    private String prepareURL(String text) throws UnsupportedEncodingException {
         return "https://translate.yandex.net/api/v1.5/tr/translate?key=" +
                 YANDEX_API_KEY + "&text=" + encodeText(text) + "&lang=" + TRANSLATION_DIRECTION;
     }
@@ -50,17 +52,19 @@ public class Translator {
      * @return translated text
      */
     private String parseContent(String content) {
-        //TODO: implement me
-        return null;
+        int startIndex = content.indexOf("<text>") + 7;
+        int endIndex = content.indexOf("</text>");
+        return content.substring(startIndex, endIndex);
     }
+
+    //private String get
 
     /**
      * Encodes text that need to be translated to put it as URL parameter
      * @param text to be translated
      * @return encoded text
      */
-    private String encodeText(String text) {
-        //TODO: implement me
-        return null;
+    private String encodeText(String text) throws UnsupportedEncodingException {
+        return text.replaceAll(" ", "+");
     }
 }

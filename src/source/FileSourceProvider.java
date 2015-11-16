@@ -2,6 +2,7 @@ package source;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -14,7 +15,13 @@ public class FileSourceProvider implements SourceProvider {
 
     @Override
     public boolean isAllowed(String pathToSource) {
-        return Files.exists(Paths.get(pathToSource));
+        Path path;
+        try {
+            path = Paths.get(pathToSource);
+        } catch (InvalidPathException e) {
+            return false;
+        }
+        return Files.exists(path) && pathToSource.endsWith(".txt");
     }
 
     @Override
@@ -25,9 +32,8 @@ public class FileSourceProvider implements SourceProvider {
             while ((interLine = reader.readLine()) != null) {
                 finalLine = finalLine + " " + interLine;
             }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
         }
+
         return finalLine;
     }
 }

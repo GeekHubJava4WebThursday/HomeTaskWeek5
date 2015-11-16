@@ -17,7 +17,11 @@ public class SourceLoader {
     }
 
     public String loadSource(String pathToSource) throws IOException {
-        //TODO: implement me
-        return null;
+        for (SourceProvider sourceProvider : sourceProviders) {
+            if (sourceProvider.isAllowed(pathToSource)) {
+                return sourceProvider.load(pathToSource);
+            }
+        }
+        throw new IOException("Text not found");
     }
 }
