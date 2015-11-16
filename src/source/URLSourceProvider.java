@@ -3,8 +3,6 @@ package source;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Implementation for loading content from specified URL.<br/>
@@ -12,13 +10,14 @@ import java.util.regex.Pattern;
  */
 public class URLSourceProvider implements SourceProvider {
 
-    private static final String URL_EXP = "^(https?://)?([\\da-z\\.-]+)\\.([a-z\\.]{2,6})([/\\w \\.-]*)*/?$";
-
     @Override
     public boolean isAllowed(String pathToSource) {
-        Pattern pattern = Pattern.compile(URL_EXP);
-        Matcher matcher = pattern.matcher(pathToSource);
-        return matcher.matches();
+        try {
+            new URL(pathToSource).openStream();
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
     }
 
     @Override

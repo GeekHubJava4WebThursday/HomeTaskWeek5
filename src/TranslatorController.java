@@ -1,4 +1,3 @@
-import source.FileSourceProvider;
 import source.SourceLoader;
 import source.URLSourceProvider;
 

@@ -2,9 +2,6 @@ import source.SourceProvider;
 import source.URLSourceProvider;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 
 /**
  * Provides utilities for translating texts to russian language.<br/>
@@ -56,8 +53,6 @@ public class Translator {
         int endIndex = content.indexOf("</text>");
         return content.substring(startIndex, endIndex);
     }
-
-    //private String get
 
     /**
      * Encodes text that need to be translated to put it as URL parameter
