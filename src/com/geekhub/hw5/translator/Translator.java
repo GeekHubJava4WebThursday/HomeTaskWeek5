@@ -3,6 +3,10 @@ package com.geekhub.hw5.translator;
 import com.geekhub.hw5.translator.source.URLSourceProvider;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Provides utilities for translating texts to russian language.<br/>
@@ -15,7 +19,7 @@ public class Translator {
      * Yandex Translate API key could be obtained at <a href="http://api.yandex.ru/key/form.xml?service=trnsl">http://api.yandex.ru/key/form.xml?service=trnsl</a>
      * to do that you have to be authorized.
      */
-    private static final String YANDEX_API_KEY = "{put_your_yandex_translate_api_key_here}";
+    private static final String YANDEX_API_KEY = "trnsl.1.1.20151114T120610Z.e08b88aa89ea5295.90f276ad4cd8e526e2989a2182a0ec2b3c742f89";
     private static final String TRANSLATION_DIRECTION = "ru";
 
     public Translator(URLSourceProvider urlSourceProvider) {
@@ -29,8 +33,9 @@ public class Translator {
      * @throws IOException
      */
     public String translate(String original) throws IOException {
-        //TODO: implement me
-        return "";
+        String translated = urlSourceProvider.load(prepareURL(original));
+        return parseContent(translated);
+//        return translated;
     }
 
     /**
@@ -48,8 +53,14 @@ public class Translator {
      * @return translated text
      */
     private String parseContent(String content) {
-        //TODO: implement me
-        return null;
+        String regexp = "<text>(.+)?</text>";
+        Pattern pattern = Pattern.compile(regexp);
+        Matcher matcher = pattern.matcher(content);
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        System.out.println("No match found!");
+        return "";
     }
 
     /**
@@ -58,7 +69,12 @@ public class Translator {
      * @return encoded text
      */
     private String encodeText(String text) {
-        //TODO: implement me
+//        return text;
+        try {
+            return URLEncoder.encode(text, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 }

@@ -16,14 +16,22 @@ public class TranslatorController {
         Scanner scanner = new Scanner(System.in);
         String command = scanner.next();
         while(!"exit".equals(command)) {
-            //TODO: add exception handling here to let user know about it and ask him to enter another path to translation
-            //      So, the only way to stop the application is to do that manually or type "exit"
-            String source = sourceLoader.loadSource(command);
-            String translation = translator.translate(source);
-
-            System.out.println("Original: " + source);
-            System.out.println("Translation: " + translation);
-
+            try {
+                String source = sourceLoader.loadSource(command);
+                if (source != null) {
+                    try {
+                        String translation = translator.translate(source);
+                        System.out.println("Original: " + source);
+                        System.out.println("Translation: " + translation);
+                    } catch (IOException e) {
+                        System.out.println("Can't load source! \nPlease, check path and try again or type \"exit\"");
+                    }
+                } else {
+                    System.out.println("Unknown source! \nPlease, check path and try again or type \"exit\"");
+                }
+            } catch (IOException e) {
+                System.out.println("Translation error! \nPlease, check path and try again or type \"exit\"");
+            }
             command = scanner.next();
         }
     }
