@@ -1,6 +1,9 @@
 package com.geekhub.hw5.translator.source;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  * Implementation for loading content from local file system.
@@ -9,15 +12,26 @@ import java.io.*;
  */
 public class FileSourceProvider implements SourceProvider {
 
+    public static final int BUFFER_SIZE = 8 * 1024;
+
     @Override
     public boolean isAllowed(String pathToSource) {
-        //TODO: implement me
-        return false;
+        File file = new File(pathToSource);
+        return (file.isFile() && file.canRead());
     }
 
     @Override
     public String load(String pathToSource) throws IOException {
-        //TODO: implement me
-        return null;
+        String text = "";
+        File file = new File(pathToSource);
+        try(BufferedReader reader = new BufferedReader(new FileReader(file), BUFFER_SIZE)) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                text = text.concat(line).concat(" ");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return text;
     }
 }
