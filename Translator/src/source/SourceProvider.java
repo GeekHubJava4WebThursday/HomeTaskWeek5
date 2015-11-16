@@ -13,7 +13,7 @@ public interface SourceProvider {
      * @param pathToSource absolute path to the source
      * @return whether current implementation load the source for specified pathToSource
      */
-    public boolean isAllowed(String pathToSource);
+    boolean isAllowed(String pathToSource);
 
     /**
      * Loads text from specified path.
@@ -21,5 +21,5 @@ public interface SourceProvider {
      * @param pathToSource absolute path to the source
      * @return content of the source for specified pathToSource
      */
-    public String load(String pathToSource) throws IOException;
+    String load(String pathToSource) throws IOException;
 }
