@@ -3,6 +3,8 @@ import source.URLSourceProvider;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Provides utilities for translating texts to russian language.<br/>
@@ -11,6 +13,9 @@ import java.net.URLEncoder;
  */
 public class Translator {
     private URLSourceProvider urlSourceProvider;
+
+    // Pattern for transleted text
+    private static final Pattern TEXT_PATTERN = Pattern.compile(".*<text>(.*)</text>.*");
     /**
      * Yandex Translate API key could be obtained at <a href="http://api.yandex.ru/key/form.xml?service=trnsl">http://api.yandex.ru/key/form.xml?service=trnsl</a>
      * to do that you have to be authorized.
@@ -29,8 +34,9 @@ public class Translator {
      * @throws IOException
      */
     public String translate(String original) throws IOException {
-        //TODO: implement me
-        return "";
+        String preperedUrl = prepareURL(encodeText(original));
+        return parseContent(urlSourceProvider.load(preperedUrl));
+
     }
 
     /**
@@ -47,9 +53,10 @@ public class Translator {
      * @param content that was received from Yandex Translate API by invoking prepared URL
      * @return translated text
      */
-    private String parseContent(String content) {
-        //TODO: implement me
-        return null;
+    private String parseContent(String content){
+        final Matcher matcher = TEXT_PATTERN.matcher(content);
+        matcher.find();
+        return matcher.group(1);
     }
 
     /**
@@ -57,8 +64,12 @@ public class Translator {
      * @param text to be translated
      * @return encoded text
      */
-    private String encodeText(String text) {
-        //TODO: implement me
+    private String encodeText(String text){
+        try {
+            return URLEncoder.encode(text, "UTF-8");
+        } catch(UnsupportedEncodingException e){
+            e.printStackTrace();
+        }
         return null;
     }
 }
