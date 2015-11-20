@@ -52,10 +52,16 @@ public class Translator {
      * @return translated text
      */
     private String parseContent(String content) throws IOException {
-        Pattern pattern = Pattern.compile(".*<text>(.*)</text>.*", Pattern.DOTALL);
-        Matcher matcher = pattern.matcher(content);
-        if (matcher.find()) {
-            return matcher.group(1);
+        Pattern patternTranslatedText = Pattern.compile(".*<text>(.*)</text>.*", Pattern.DOTALL);
+        Matcher matcherTranslatedText = patternTranslatedText.matcher(content);
+        Pattern patternResponseCode = Pattern.compile(".*code=\"(.*)\" lang.*");
+        Matcher matcherResponseCode = patternResponseCode.matcher(content);
+        int responseCode = 0;
+        if (matcherResponseCode.find()) {
+            responseCode = Integer.valueOf(matcherResponseCode.group(1));
+        }
+        if (matcherTranslatedText.find() && responseCode == 200) {
+            return matcherTranslatedText.group(1);
         } else {
             throw new IOException();
         }
