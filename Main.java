@@ -10,9 +10,9 @@ import java.util.Scanner;
 
 public class Main {
 
-	// write your code here
+
         public static void main(String[] args) throws IOException {
-            //initialization
+      
             SourceLoader sourceLoader = new SourceLoader();
             Translation translation = new Translation(new URLSourceProvider());
 
